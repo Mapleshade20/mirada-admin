@@ -1,8 +1,9 @@
 import type { ReactNode } from "react";
 import { CheckForApplicationUpdate, Layout as RALayout } from "react-admin";
+import { CustomMenu } from "./components";
 
 export const Layout = ({ children }: { children: ReactNode }) => (
-  <RALayout>
+  <RALayout menu={CustomMenu}>
     {children}
     <CheckForApplicationUpdate />
   </RALayout>

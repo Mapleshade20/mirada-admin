@@ -1,8 +1,12 @@
-### Admin APIs
+# Admin site for Project Contigo
+
+Admin frontend for Contigo - a social pairing event that matches university students two by two based on interests, traits, and preferences.
+
+## Admin APIs
 
 _Admin endpoints run on env var `VITE_API_BASE_URL`_
 
-#### User Management
+### User Management
 
 - `GET /api/admin/users?...` - Get paginated users overview
   - Query Params: (optional)
@@ -28,8 +32,7 @@ _Admin endpoints run on env var `VITE_API_BASE_URL`_
   }
   ```
 
-- `GET /api/admin/user` - Get detailed user information
-  - JSON request body: `email` or `user_id`
+- `GET /api/admin/user/{user_id}` - Get detailed user information
 
   ```json
   {
@@ -38,7 +41,7 @@ _Admin endpoints run on env var `VITE_API_BASE_URL`_
     "status": "form_completed",
     "wechat_id": "examplewechatid",
     "grade": "undergraduate",
-    "card_photo_uri": "/api/admin/users/91f4cf07-b2b4-4c05-a31e-9ed524c936ee.jpg",
+    "card_photo_uri": "/api/admin/card/91f4cf07-b2b4-4c05-a31e-9ed524c936ee.jpg",
     "created_at": [2025, 250, 3, 35, 40, 479291000, 0, 0, 0],
     "updated_at": [2025, 250, 3, 56, 32, 487637000, 0, 0, 0],
     "form": {
@@ -50,7 +53,7 @@ _Admin endpoints run on env var `VITE_API_BASE_URL`_
       "ideal_traits": ["empathy", "explorer"],
       "physical_boundary": 3,
       "self_intro": "Hello world",
-      "profile_photo_uri": "/api/admin/users/91f4cf07-b2b4-4c05-a31e-9ed524c936ee.jpg"
+      "profile_photo_uri": "/api/admin/photo/91f4cf07-b2b4-4c05-a31e-9ed524c936ee.jpg"
     }
   }
   ```
@@ -69,10 +72,13 @@ _Admin endpoints run on env var `VITE_API_BASE_URL`_
   }
   ```
 
-- `GET /api/admin/card/{filename}` - Get user ID card photo
+- `GET /api/admin/card/{filename}` - Get user student card photo
   - Returns `200 OK` with image
 
-#### Analytics & Statistics
+- `GET /api/admin/photo/{filename}` - Get user profile photo
+  - Returns `200 OK` with image
+
+### Analytics & Statistics
 
 - `GET /api/admin/stats` - Get user and system statistics
 
@@ -112,7 +118,7 @@ _Admin endpoints run on env var `VITE_API_BASE_URL`_
   ]
   ```
 
-#### Matching Operations
+### Matching Operations
 
 - `POST /api/admin/update-previews` - Regenerate match previews
   - Response: `{"success": true, "message": "Match previews updated successfully"}`
