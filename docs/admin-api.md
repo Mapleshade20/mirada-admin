@@ -1,8 +1,12 @@
-### Admin APIs
+# Admin site for Project Contigo
+
+Admin frontend for Contigo - a social pairing event that matches university students two by two based on interests, traits, and preferences.
+
+## Admin APIs
 
 _Admin endpoints run on env var `VITE_API_BASE_URL`_
 
-#### User Management
+### User Management
 
 - `GET /api/admin/users?...` - Get paginated users overview
   - Query Params: (optional)
@@ -28,8 +32,7 @@ _Admin endpoints run on env var `VITE_API_BASE_URL`_
   }
   ```
 
-- `GET /api/admin/user` - Get detailed user information
-  - JSON request body: `email` or `user_id`
+- `GET /api/admin/user/{user_id}` - Get detailed user information
 
   ```json
   {
@@ -72,7 +75,7 @@ _Admin endpoints run on env var `VITE_API_BASE_URL`_
 - `GET /api/admin/card/{filename}` - Get user ID card photo
   - Returns `200 OK` with image
 
-#### Analytics & Statistics
+### Analytics & Statistics
 
 - `GET /api/admin/stats` - Get user and system statistics
 
@@ -112,7 +115,7 @@ _Admin endpoints run on env var `VITE_API_BASE_URL`_
   ]
   ```
 
-#### Matching Operations
+### Matching Operations
 
 - `POST /api/admin/update-previews` - Regenerate match previews
   - Response: `{"success": true, "message": "Match previews updated successfully"}`
