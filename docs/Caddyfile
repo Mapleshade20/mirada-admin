@@ -1,0 +1,15 @@
+# Use cloudflared tunnel
+
+:8093 {
+				root * /var/www/mirada-admin/dist
+
+				encode gzip zstd
+
+				# Make sure to adjust the path to your API as needed. Check .env
+				route {
+        				reverse_proxy /api/admin/* 127.0.0.1:8091
+
+        				try_files {path} /index.html
+	      				file_server
+  			}
+}
