@@ -14,6 +14,31 @@ const ScheduledMatchCreateToolbar = () => (
   </Toolbar>
 );
 
+// Parse function to convert user's local datetime to UTC ISO string with seconds
+const parseScheduledTime = (value: string | Date | null): string | null => {
+  if (!value) return null;
+
+  // If value is already a Date object, convert to ISO string
+  if (value instanceof Date) {
+    return value.toISOString();
+  }
+
+  // If value is a string, parse it as local time and convert to UTC
+  if (typeof value === "string") {
+    // Add seconds if not present (React Admin's DateTimeInput omits seconds)
+    const dateTimeWithSeconds =
+      value.includes(":") && value.split(":").length === 2
+        ? `${value}:00`
+        : value;
+
+    // Create Date object treating input as local time, then convert to UTC
+    const localDate = new Date(dateTimeWithSeconds);
+    return localDate.toISOString();
+  }
+
+  return null;
+};
+
 export const ScheduledMatchCreate = () => (
   <Create>
     <SimpleForm toolbar={<ScheduledMatchCreateToolbar />}>
@@ -33,6 +58,7 @@ export const ScheduledMatchCreate = () => (
       <DateTimeInput
         source="scheduled_time"
         label="Scheduled Time"
+        parse={parseScheduledTime}
         validate={[required()]}
         fullWidth
       />

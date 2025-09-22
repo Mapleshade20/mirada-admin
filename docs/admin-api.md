@@ -12,7 +12,7 @@ _Admin endpoints run on env var `VITE_API_BASE_URL`_
   - Query Params: (optional)
     - `page` (default: 1) - Page number
     - `limit` (default: 20, max: 100) - Items per page
-    - `status` (default: null, accpetable: `unverified`|`verification_pending`|`verified`|`form_completed`|`matched`|`confirmed`) - Filter a specific status
+    - `status` (default: null, possible: `unverified`|`verification_pending`|`verified`|`form_completed`|`matched`|`confirmed`) - Filter a specific status
 
   ```json
   {
@@ -160,6 +160,7 @@ _Admin endpoints run on env var `VITE_API_BASE_URL`_
   ```
 
 - `GET /api/admin/scheduled-matches` - View scheduled final matches
+  - Possible values of `status`: Pending, Completed, Failed
   - Response:
 
   ```json

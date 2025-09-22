@@ -19,10 +19,14 @@ Linting and type checking:
 npx @biomejs/biome check --write
 ```
 
+Use `context7` mcp to check React Admin's online docs
+
+Check backend admin APIs in `docs/admin-api.md`
+
 ## Architecture
 
 This is a React Admin application for managing the Contigo platform. It's built with:
-- **React Admin** framework for admin interface (use `context7` mcp to check its online docs)
+- **React Admin** framework for admin interface
 - **Vite** for development and building
 - **TypeScript** for type safety
 - **Material-UI** components via React Admin

@@ -7,10 +7,6 @@ const httpClient = (url: string, options: Record<string, unknown> = {}) => {
   if (!options.headers) {
     options.headers = new Headers({ Accept: "application/json" });
   }
-  const token = localStorage.getItem("token");
-  if (token) {
-    options.headers.set("Authorization", `Bearer ${token}`);
-  }
   return fetchUtils.fetchJson(url, options);
 };
 

@@ -10,31 +10,7 @@ import {
   TextField,
   TopToolbar,
 } from "react-admin";
-
-const StatusField = ({ record }: { record?: Record<string, unknown> }) => {
-  if (!record) return null;
-
-  const getStatusColor = (status: string) => {
-    switch (status?.toLowerCase()) {
-      case "completed":
-        return "success";
-      case "pending":
-        return "warning";
-      case "failed":
-        return "error";
-      default:
-        return "default";
-    }
-  };
-
-  return (
-    <Chip
-      label={record.status}
-      color={getStatusColor(record.status)}
-      size="small"
-    />
-  );
-};
+import { StatusField } from "../components";
 
 const ScheduledMatchListActions = () => (
   <TopToolbar>

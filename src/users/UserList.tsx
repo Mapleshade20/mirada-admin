@@ -1,4 +1,3 @@
-import { Chip } from "@mui/material";
 import {
   BulkDeleteButton,
   BulkUpdateButton,
@@ -13,6 +12,7 @@ import {
   TextInput,
   TopToolbar,
 } from "react-admin";
+import { StatusField } from "../components";
 
 const statusChoices = [
   { id: "unverified", name: "Unverified" },
@@ -34,37 +34,6 @@ const UserFilter = (props: Record<string, unknown>) => (
     />
   </Filter>
 );
-
-const StatusField = ({ record }: { record?: Record<string, unknown> }) => {
-  if (!record) return null;
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "verified":
-        return "success";
-      case "form_completed":
-        return "primary";
-      case "matched":
-        return "secondary";
-      case "confirmed":
-        return "success";
-      case "verification_pending":
-        return "warning";
-      case "unverified":
-        return "error";
-      default:
-        return "default";
-    }
-  };
-
-  return (
-    <Chip
-      label={record.status?.replace("_", " ")}
-      color={getStatusColor(record.status)}
-      size="small"
-    />
-  );
-};
 
 const UserListActions = () => (
   <TopToolbar>
@@ -94,7 +63,6 @@ export const UserList = () => (
       <TextField source="id" />
       <EmailField source="email" />
       <StatusField source="status" />
-      <TextField source="grade" />
       <TextField source="wechat_id" />
       <DateField source="created_at" showTime />
       <DateField source="updated_at" showTime />
