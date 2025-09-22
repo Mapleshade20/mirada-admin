@@ -96,7 +96,7 @@ export const MatchList = () => (
     perPage={25}
     actions={<MatchListActions />}
   >
-    <Datagrid rowClick={false}>
+    <Datagrid rowClick={false} bulkActionButtons={false}>
       <TextField source="id" label="Match ID" />
       <EmailField source="user_a_email" label="User A" />
       <EmailField source="user_b_email" label="User B" />

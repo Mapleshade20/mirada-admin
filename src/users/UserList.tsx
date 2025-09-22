@@ -9,7 +9,6 @@ import {
   List,
   SelectInput,
   TextField,
-  TextInput,
   TopToolbar,
 } from "react-admin";
 import { StatusField } from "../components";
@@ -25,12 +24,12 @@ const statusChoices = [
 
 const UserFilter = (props: Record<string, unknown>) => (
   <Filter {...props}>
-    <TextInput label="Search by email" source="email" alwaysOn />
     <SelectInput
       label="Status"
       source="status"
       choices={statusChoices}
       emptyText="All statuses"
+      alwaysOn
     />
   </Filter>
 );
@@ -41,17 +40,6 @@ const UserListActions = () => (
   </TopToolbar>
 );
 
-const UserBulkActionButtons = () => (
-  <>
-    <BulkUpdateButton
-      label="Verify Selected"
-      data={{ status: "verified" }}
-      mutationMode="pessimistic"
-    />
-    <BulkDeleteButton />
-  </>
-);
-
 export const UserList = () => (
   <List
     filters={<UserFilter />}
@@ -59,7 +47,7 @@ export const UserList = () => (
     perPage={25}
     actions={<UserListActions />}
   >
-    <Datagrid rowClick="show" bulkActionButtons={<UserBulkActionButtons />}>
+    <Datagrid rowClick="show" bulkActionButtons={false}>
       <TextField source="id" />
       <EmailField source="email" />
       <StatusField source="status" />

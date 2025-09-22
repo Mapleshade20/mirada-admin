@@ -29,10 +29,41 @@ const parseTimestamp = (timestamp: number[]): string => {
   return date.toISOString();
 };
 
+// Helper function to sort data client-side
+const sortData = (data: unknown[], field: string, order: string) => {
+  return data.sort((a, b) => {
+    let aVal = a[field];
+    let bVal = b[field];
+
+    // Handle nested field access (e.g., "user_a_email", "form.gender")
+    if (field.includes(".")) {
+      const fieldParts = field.split(".");
+      aVal = fieldParts.reduce((obj, key) => obj?.[key], a);
+      bVal = fieldParts.reduce((obj, key) => obj?.[key], b);
+    }
+
+    // Handle null/undefined values
+    if (aVal == null && bVal == null) return 0;
+    if (aVal == null) return order === "ASC" ? -1 : 1;
+    if (bVal == null) return order === "ASC" ? 1 : -1;
+
+    // Convert dates for comparison
+    if (typeof aVal === "string" && aVal.match(/^\d{4}-\d{2}-\d{2}T/)) {
+      aVal = new Date(aVal);
+      bVal = new Date(bVal);
+    }
+
+    // Compare values
+    if (aVal < bVal) return order === "ASC" ? -1 : 1;
+    if (aVal > bVal) return order === "ASC" ? 1 : -1;
+    return 0;
+  });
+};
+
 export const dataProvider: DataProvider = {
   getList: (resource, params) => {
     const { page, perPage } = params.pagination;
-    // const { field: _field, order: _order } = params.sort;
+    const { field, order } = params.sort;
     const query: Record<string, unknown> = {
       page,
       limit: perPage,
@@ -57,41 +88,52 @@ export const dataProvider: DataProvider = {
         break;
       case "scheduled-matches":
         url = `${apiUrl}/api/admin/scheduled-matches`;
-        return httpClient(url).then(({ json }) => ({
-          data: json.map((item: Record<string, unknown>) => ({
+        return httpClient(url).then(({ json }) => {
+          let data = json.map((item: Record<string, unknown>) => ({
             ...item,
             scheduled_time: new Date(item.scheduled_time).toISOString(),
             created_at: new Date(item.created_at).toISOString(),
             executed_at: item.executed_at
               ? new Date(item.executed_at).toISOString()
               : null,
-          })),
-          total: json.length,
-        }));
+          }));
+
+          // Apply client-side sorting if field is specified
+          if (field) {
+            data = sortData(data, field, order);
+          }
+
+          return { data, total: json.length };
+        });
       default:
         throw new Error(`Unknown resource: ${resource}`);
     }
 
     return httpClient(url).then(({ json }) => {
+      let data: unknown[];
+      let total: number;
+
       if (resource === "users") {
-        return {
-          data: json.data.map((user: Record<string, unknown>) => ({
-            ...user,
-            created_at: parseTimestamp(user.created_at),
-            updated_at: parseTimestamp(user.updated_at),
-          })),
-          total: json.pagination.total,
-        };
+        data = json.data.map((user: Record<string, unknown>) => ({
+          ...user,
+          created_at: parseTimestamp(user.created_at),
+          updated_at: parseTimestamp(user.updated_at),
+        }));
+        total = json.pagination.total;
+      } else if (resource === "matches") {
+        data = json.data;
+        total = json.pagination.total;
+      } else {
+        data = json;
+        total = json.length;
       }
 
-      if (resource === "matches") {
-        return {
-          data: json.data,
-          total: json.pagination.total,
-        };
+      // Apply client-side sorting if field is specified
+      if (field) {
+        data = sortData(data, field, order);
       }
 
-      return { data: json, total: json.length };
+      return { data, total };
     });
   },
 

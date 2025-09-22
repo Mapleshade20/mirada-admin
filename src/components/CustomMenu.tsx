@@ -1,10 +1,4 @@
-import {
-  Analytics,
-  Favorite,
-  People,
-  Schedule,
-  Tag,
-} from "@mui/icons-material";
+import { Favorite, People, Schedule, Tag } from "@mui/icons-material";
 import { Menu } from "react-admin";
 
 export const CustomMenu = () => (
@@ -16,11 +10,6 @@ export const CustomMenu = () => (
       to="/scheduled-matches"
       primaryText="Scheduled Matches"
       leftIcon={<Schedule />}
-    />
-    <Menu.Item
-      to="/analytics/dashboard"
-      primaryText="Analytics"
-      leftIcon={<Analytics />}
     />
     <Menu.Item
       to="/analytics/tags"

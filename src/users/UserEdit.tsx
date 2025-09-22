@@ -11,25 +11,14 @@ import {
   DateField,
   Edit,
   EmailField,
-  SaveButton,
-  SelectInput,
   SimpleForm,
   TextField,
-  Toolbar,
   useNotify,
   useRecordContext,
   useRefresh,
   useUpdate,
 } from "react-admin";
-
-const statusChoices = [
-  { id: "unverified", name: "Unverified" },
-  { id: "verification_pending", name: "Verification Pending" },
-  { id: "verified", name: "Verified" },
-  { id: "form_completed", name: "Form Completed" },
-  { id: "matched", name: "Matched" },
-  { id: "confirmed", name: "Confirmed" },
-];
+import { ImageField } from "../components/ImageField";
 
 const QuickActionButtons = () => {
   const record = useRecordContext();
@@ -53,6 +42,13 @@ const QuickActionButtons = () => {
     }
   };
 
+  // Determine button states based on status
+  const isUnverified = record.status === "unverified";
+
+  const verifyDisabled =
+    isUnverified || record.status !== "verification_pending";
+  const rejectDisabled = isUnverified;
+
   return (
     <Box sx={{ mt: 2, display: "flex", gap: 2 }}>
       <Button
@@ -60,7 +56,7 @@ const QuickActionButtons = () => {
         color="success"
         startIcon={<CheckCircle />}
         onClick={() => handleStatusUpdate("verified")}
-        disabled={record.status === "verified"}
+        disabled={verifyDisabled}
       >
         Verify User
       </Button>
@@ -69,7 +65,7 @@ const QuickActionButtons = () => {
         color="error"
         startIcon={<Cancel />}
         onClick={() => handleStatusUpdate("unverified")}
-        disabled={record.status === "unverified"}
+        disabled={rejectDisabled}
       >
         Reject User
       </Button>
@@ -77,67 +73,9 @@ const QuickActionButtons = () => {
   );
 };
 
-const UserEditToolbar = () => (
-  <Toolbar>
-    <SaveButton />
-  </Toolbar>
-);
-
-const CardImageDisplay = ({ record }: { record?: Record<string, unknown> }) => {
-  if (!record?.card_photo_uri) return null;
-
-  const imageUrl = `${import.meta.env.VITE_API_BASE_URL || "http://localhost:8091"}${record.card_photo_uri}`;
-
-  return (
-    <Box sx={{ textAlign: "center", mb: 2 }}>
-      <Typography variant="subtitle2" gutterBottom>
-        ID Card Photo
-      </Typography>
-      <img
-        src={imageUrl}
-        alt="ID Card"
-        style={{
-          maxWidth: "100%",
-          maxHeight: "300px",
-          borderRadius: "8px",
-          objectFit: "cover",
-        }}
-      />
-    </Box>
-  );
-};
-
-const ProfileImageDisplay = ({
-  record,
-}: {
-  record?: Record<string, unknown>;
-}) => {
-  if (!record?.form?.profile_photo_uri) return null;
-
-  const imageUrl = `${import.meta.env.VITE_API_BASE_URL || "http://localhost:8091"}${record.form.profile_photo_uri}`;
-
-  return (
-    <Box sx={{ textAlign: "center", mb: 2 }}>
-      <Typography variant="subtitle2" gutterBottom>
-        Profile Photo
-      </Typography>
-      <img
-        src={imageUrl}
-        alt="Profile"
-        style={{
-          maxWidth: "200px",
-          maxHeight: "200px",
-          borderRadius: "8px",
-          objectFit: "cover",
-        }}
-      />
-    </Box>
-  );
-};
-
 export const UserEdit = () => (
   <Edit>
-    <SimpleForm toolbar={<UserEditToolbar />}>
+    <SimpleForm toolbar={false}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
           <Card>
@@ -146,13 +84,42 @@ export const UserEdit = () => (
                 User Information
               </Typography>
 
-              <TextField source="id" disabled />
-              <EmailField source="email" />
-              <SelectInput source="status" choices={statusChoices} fullWidth />
-              <TextField source="grade" disabled />
-              <TextField source="wechat_id" disabled />
-              <DateField source="created_at" disabled showTime />
-              <DateField source="updated_at" disabled showTime />
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  User ID
+                </Typography>
+                <TextField source="id" disabled />
+              </Box>
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  Email
+                </Typography>
+                <EmailField source="email" />
+              </Box>
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  Grade
+                </Typography>
+                <TextField source="grade" disabled />
+              </Box>
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  WeChat ID
+                </Typography>
+                <TextField source="wechat_id" disabled />
+              </Box>
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  Created At
+                </Typography>
+                <DateField source="created_at" disabled showTime />
+              </Box>
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  Updated At
+                </Typography>
+                <DateField source="updated_at" disabled showTime />
+              </Box>
 
               <QuickActionButtons />
             </CardContent>
@@ -162,8 +129,18 @@ export const UserEdit = () => (
         <Grid item xs={12} md={4}>
           <Card>
             <CardContent>
-              <CardImageDisplay />
-              <ProfileImageDisplay />
+              <ImageField
+                source="card_photo_uri"
+                label="ID Card Photo"
+                maxWidth="100%"
+                maxHeight="300px"
+              />
+              <ImageField
+                source="form.profile_photo_uri"
+                label="Profile Photo"
+                maxWidth="100%"
+                maxHeight="300px"
+              />
             </CardContent>
           </Card>
         </Grid>

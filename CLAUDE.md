@@ -4,11 +4,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Common Commands
 
-Development server:
-```bash
-npm run dev
-```
-
 Build for production:
 ```bash
 npm run build
@@ -16,7 +11,7 @@ npm run build
 
 Linting and type checking:
 ```bash
-npx @biomejs/biome check --write
+npx @biomejs/biome check --write --unsafe
 ```
 
 Use `context7` mcp to check React Admin's online docs

@@ -47,7 +47,7 @@ export const ScheduledMatchList = () => (
     perPage={25}
     actions={<ScheduledMatchListActions />}
   >
-    <Datagrid rowClick={false}>
+    <Datagrid rowClick={false} bulkActionButtons={false}>
       <TextField source="id" label="Schedule ID" />
       <DateField source="scheduled_time" label="Scheduled Time" showTime />
       <StatusField source="status" label="Status" />
@@ -61,6 +61,7 @@ export const ScheduledMatchList = () => (
       <FunctionField
         source="error_message"
         label="Error"
+        sortBy="error_message"
         render={(record: Record<string, unknown>) =>
           record.error_message ? (
             <Chip label="Error" color="error" size="small" />
@@ -69,6 +70,7 @@ export const ScheduledMatchList = () => (
       />
       <FunctionField
         label="Actions"
+        sortable={false}
         render={(record: Record<string, unknown>) => (
           <CustomDeleteButton record={record} />
         )}

@@ -24,7 +24,6 @@ export const App = () => (
       icon={Schedule}
     />
     <CustomRoutes>
-      <Route path="/analytics/dashboard" element={<Dashboard />} />
       <Route path="/analytics/tags" element={<TagsAnalytics />} />
     </CustomRoutes>
   </Admin>
