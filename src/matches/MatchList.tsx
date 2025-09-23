@@ -7,6 +7,7 @@ import {
   ExportButton,
   List,
   NumberField,
+  ReferenceField,
   TextField,
   TopToolbar,
   useNotify,
@@ -69,8 +70,22 @@ export const MatchList = () => (
   >
     <Datagrid rowClick={false} bulkActionButtons={false}>
       <TextField source="id" label="Match ID" />
-      <EmailField source="user_a_email" label="User A" />
-      <EmailField source="user_b_email" label="User B" />
+      <ReferenceField
+        source="user_a_id"
+        reference="users"
+        link="show"
+        label="User A"
+      >
+        <TextField source="email" />
+      </ReferenceField>
+      <ReferenceField
+        source="user_b_id"
+        reference="users"
+        link="show"
+        label="User B"
+      >
+        <TextField source="email" />
+      </ReferenceField>
       <NumberField
         source="score"
         label="Match Score"

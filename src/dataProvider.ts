@@ -160,7 +160,9 @@ export const dataProvider: DataProvider = {
   },
 
   getMany: (resource, params) => {
-    const promises = params.ids.map((id) => this.getOne?.(resource, { id }));
+    const promises = params.ids.map((id) =>
+      dataProvider.getOne(resource, { id }),
+    );
     return Promise.all(promises).then((responses) => ({
       data: responses.map((response) => response.data),
     }));
