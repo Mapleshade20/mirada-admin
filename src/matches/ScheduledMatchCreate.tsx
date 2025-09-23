@@ -47,7 +47,7 @@ export const ScheduledMatchCreate = () => (
           <Typography variant="h6" gutterBottom>
             Schedule New Matching Run
           </Typography>
-          <Typography variant="body2" color="text.secondary" paragraph>
+          <Typography variant="body2" color="text.secondary">
             Schedule a time for the automatic matching algorithm to run. This
             will create matches between eligible users based on their
             preferences and compatibility.

@@ -1,8 +1,5 @@
 import {
-  BulkDeleteButton,
-  BulkUpdateButton,
   Datagrid,
-  DateField,
   EmailField,
   ExportButton,
   Filter,
@@ -52,8 +49,6 @@ export const UserList = () => (
       <EmailField source="email" />
       <StatusField source="status" />
       <TextField source="wechat_id" />
-      <DateField source="created_at" showTime />
-      <DateField source="updated_at" showTime />
     </Datagrid>
   </List>
 );
