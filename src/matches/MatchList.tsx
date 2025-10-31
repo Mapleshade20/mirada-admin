@@ -1,9 +1,8 @@
 // import { Card, CardContent, Typography, Box } from "@mui/material";
-import { PlayArrow, Refresh } from "@mui/icons-material";
+import { PlayArrow, Preview, Refresh } from "@mui/icons-material";
 import {
   Button,
   Datagrid,
-  EmailField,
   ExportButton,
   List,
   NumberField,
@@ -43,12 +42,29 @@ const MatchListActions = () => {
     }
   };
 
+  const handleDryRunFinal = async () => {
+    try {
+      const result = await adminActions.dryRunFinal();
+      notify(result.message || "Dry run completed successfully", {
+        type: "success",
+      });
+      // Don't refresh for dry run since it doesn't change data
+    } catch {
+      notify("Failed to run dry run final match", { type: "error" });
+    }
+  };
+
   return (
     <TopToolbar>
       <Button
         onClick={handleUpdatePreviews}
         label="Update Previews"
         startIcon={<Refresh />}
+      />
+      <Button
+        onClick={handleDryRunFinal}
+        label="Dry Run Final"
+        startIcon={<Preview />}
       />
       <Button
         onClick={handleTriggerMatch}
@@ -67,6 +83,7 @@ export const MatchList = () => (
     sort={{ field: "score", order: "DESC" }}
     perPage={25}
     actions={<MatchListActions />}
+    empty={false}
   >
     <Datagrid rowClick={false} bulkActionButtons={false}>
       <TextField source="id" label="Match ID" />

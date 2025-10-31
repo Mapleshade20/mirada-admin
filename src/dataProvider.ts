@@ -273,6 +273,12 @@ export const adminActions = {
     }).then(({ json }) => json);
   },
 
+  dryRunFinal: () => {
+    return httpClient(`${apiUrl}/api/admin/dry-run-final`, {
+      method: "POST",
+    }).then(({ json }) => json);
+  },
+
   getCardImage: (filename: string) => {
     return `${apiUrl}/api/admin/card/${filename}`;
   },

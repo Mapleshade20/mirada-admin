@@ -19,6 +19,11 @@ const statusChoices = [
   { id: "confirmed", name: "Confirmed" },
 ];
 
+const genderChoices = [
+  { id: "male", name: "Male" },
+  { id: "female", name: "Female" },
+];
+
 const UserFilter = (props: Record<string, unknown>) => (
   <Filter {...props}>
     <SelectInput
@@ -26,6 +31,13 @@ const UserFilter = (props: Record<string, unknown>) => (
       source="status"
       choices={statusChoices}
       emptyText="All statuses"
+      alwaysOn
+    />
+    <SelectInput
+      label="Gender"
+      source="gender"
+      choices={genderChoices}
+      emptyText="All genders"
       alwaysOn
     />
   </Filter>

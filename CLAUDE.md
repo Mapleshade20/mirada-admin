@@ -16,8 +16,6 @@ npx @biomejs/biome check --write --unsafe
 
 Use `context7` mcp to check React Admin's online docs
 
-Check backend admin APIs in `docs/admin-api.md`
-
 ## Architecture
 
 This is a React Admin application for managing the Contigo platform. It's built with:
